@@ -12,10 +12,16 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 //Main Page
 Route::get('/', [App\Http\Controllers\MainPageController::class, 'index'])->name('MainPage');
 
 Auth::routes();
+
+//Search
+Route::post('/search', [App\Http\Controllers\MovieController::class, 'search'])->name('Searchbar');
+
 //User
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/movie/{id}', [App\Http\Controllers\MovieController::class, 'show']);
@@ -36,3 +42,7 @@ Route::post('/add-seat', [App\Http\Controllers\TheatreController::class, 'seat']
 Route::post('/city-save', [App\Http\Controllers\TheatreController::class, 'city'])->name('city-save');
 Route::get('/screening-details', [App\Http\Controllers\MovieScreeningController::class, 'index'])->name('screening-details');
 Route::post('/screening-save', [App\Http\Controllers\MovieScreeningController::class, 'store'])->name('screening-save');
+
+
+//
+Route::post('/test',[App\Http\Controllers\TheatreController::class, 'test']);

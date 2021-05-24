@@ -23,10 +23,11 @@
         <nav class="navbar navbar-expand-lg navbar  bg-info  navbar-absolute">
             <div class="container-fluid">
                 <div class="navbar-wrapper">
-                    <a class="navbar-brand" href="{{route('MainPage')}}">Dashboard</a>
+                    <a class="navbar-brand" href="{{route('MainPage')}}">MoviesBook.com</a>
                 </div>
                 <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                    <form>
+                    <form action="/search" method="post">
+                        @csrf
                         <div class="input-group no-border">
                             <input type="text" value="" class="form-control" placeholder="Search..." name="searchbar">
                             <div class="input-group-append">
@@ -54,6 +55,7 @@
                                         </p>
                                     </a>
                                 </li>
+
                                     @if (Route::has('register'))
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('register') }}">
@@ -70,8 +72,11 @@
             </div>
         </nav>
         <!-- End Navbar -->
-        <div class="content bg-dark">
-            <div class="row pt-5">
+        <div class="content">
+            <div class="row bg-dark pt-5">
+{{--                <div id="app">--}}
+{{--                    <search-bar></search-bar>--}}
+{{--                </div>--}}
                 @yield('content')
             </div>
         </div>
@@ -109,13 +114,13 @@
 <script src="{{asset('admin/assets/js/core/popper.min.js')}}"></script>
 <script src="{{asset('admin/assets/js/core/bootstrap.min.js')}}"></script>
 <script src="{{asset('admin/assets/js/plugins/perfect-scrollbar.jquery.min.js')}}"></script>
-{{--  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>--}}
 <script src="{{asset('admin/assets/js/plugins/chartjs.min.js')}}"></script>
-<script src="admin/assets/js/plugins/bootstrap-notify.js{{asset('')}}"></script>
+<script src="{{asset('admin/assets/js/plugins/bootstrap-notify.js')}}"></script>
 <script>
     $(document).ready(function() {
         demo.initDashboardPageCharts();
     });
 </script>
+{{--<script src="{{asset('js/app.js')}}"></script>--}}
 </body>
 </html>

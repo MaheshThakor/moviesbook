@@ -37,4 +37,8 @@ class MovieController extends Controller
         $screening = Screening::select("*")->where("movie_id", "=", $id)->get();
         return view('movie.index',['movie'=>Movie::select("*")->where("id", "=", $id)->get(),'screening' => $screening]);
     }
+    public function search(Request $request){
+        $movie = Movie::select("*")->where("title", "LIKE", "%{$request->searchbar}%")->get();
+        return view('welcome',['search'=>$movie]);
+    }
 }

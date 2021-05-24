@@ -76,24 +76,51 @@
             </div>
         </div>
     </div>
-
+<form action="/test" method="post" class="w-100">
+    @csrf
     <div class="col-12">
         <div class="card bg-light">
             <div class="card-body">
-                <div class="table-responsive">
-                        <table class="table table-borderless w-100 mt-2">
-                            @for ($i = 0; $i < 10; $i++)
-                                <tr class="text-center">
-                                    @for ($j = 0; $j < 10; $j++)
-                                        <td class="text-success m-1">
-                                            <a href="/BookSeat/{{$j}}"><i class="now-ui-icons shopping_credit-card"></i></a>
-                                        </td>
-                                    @endfor
-                                </tr>
-                            @endfor
-                        </table>
+                <div class="table-responsive text-center">
+
+                    @foreach($seat as $seats)
+                        @foreach(\App\Models\SeatReserved::select('seat_id')->where('reservation_id','=',$reserved)->get() as $rs)
+                            @if($rs->seat_id != $seats->id)
+                                <div class="d-inline-block" style="height: 40px; width: 135px;">
+                                    <input type="checkbox" class="fas fa-chair" id="{{$seats->id}}" name="seat[]" value="{{$seats->id}}">
+                                </div>
+                            @endif
+                        @endforeach
+                        @if(!isset($rs))
+                                <div class="d-inline-block" style="height: 40px; width: 135px;">
+                                    <input type="checkbox" class="fas fa-chair" id="{{$seats->id}}" name="seat[]" value="{{$seats->id}}">
+                                </div>
+                        @endif
+                    @endforeach
+{{--                    --}}
+{{--                    --}}
+{{--                    @for($i = 1; $i < 101; $i++)--}}
+{{--                    <div class="d-inline-block" style="height: 40px; width: 135px;">--}}
+{{--                        <input type="checkbox" class="fas fa-chair" id="{{$i}}" name="seat[]" value="{{$i}}">--}}
+{{--                    </div>--}}
+{{--                    @endfor--}}
+{{--                        <table class="table table-borderless w-100 mt-2">--}}
+{{--                            @for ($i = 0; $i < 10; $i++)--}}
+{{--                                <tr class="text-center">--}}
+{{--                                    @for ($j = 1; $j < 11; $j++)--}}
+{{--                                        <td class="text-success m-1">--}}
+
+{{--                                                <input type="checkbox" class="fas fa-chair fa-3x" id="{{$j}}" name="seat[]" value="{{$j}}">--}}
+{{--                                            <a href="/BookSeat/{{$j}}"><i class="now-ui-icons shopping_credit-card"></i></a>--}}
+{{--                                        </td>--}}
+{{--                                    @endfor--}}
+{{--                                </tr>--}}
+{{--                            @endfor--}}
+{{--                        </table>--}}
+                    <input type="submit" name="submit_seats" class="btn btn-success" value="Book">
                 </div>
             </div>
         </div>
     </div>
+</form>
 @endsection

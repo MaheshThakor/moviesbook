@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\Seat;
+use App\Models\SeatReserved;
 use App\Models\Theatre;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,7 @@ class TheatreController extends Controller
 {
     //
     public function index(){
-            return view('admin.theatres',['theatre'=>Theatre::all(),'city'=>City::all()]);
+            return view('admin.theatres',['theatre'=>Theatre::all(),'city'=>City::all(),'reserved'=>SeatReserved::all()]);
     }
     public function store(Request $request){
         Theatre::create([
@@ -34,5 +35,13 @@ class TheatreController extends Controller
             'theatre_id'=>$request->theatre_id
         ]);
         return redirect('/theatres-details');
+    }
+
+    public function test(Request $s){
+        dd($s);
+//            foreach ($s->seat as $seat){
+//            return $seat;
+//            }
+
     }
 }

@@ -50,20 +50,18 @@
                             </tr>
 
                             <tr>
-                                @foreach(\App\Models\Cast::select("*")->where("movie_id", "=", $movies->id)->get() as $castdata)
+                                <td>
+                                    @foreach(\App\Models\Cast::select("*")->where("movie_id", "=", $movies->id)->get() as $castdata)
                                     @foreach(\App\Models\Actor::select("*")->where("id", "=", $castdata->actor_id)->get() as $cast)
                                     @endforeach
-                                <td>
-                                    <p class="mt-1">
-
+                                    <div class="mt-1 d-inline-block bg-light text-center">
                                             <img src="data:image/png;base64, {{$cast->image}}" alt="poster" width="100px" height="100px" style="display: inline-block;"/>
                                             <br><a href="/actor/{{$cast->id}}" class="text-info">{{$cast->name}}</a><br>
                                                 <span class="text-primary">{{$castdata->role}}</span>
-
-                                    </p>
-                                </td>
-                                @endforeach
+                                    </div>
                                     @endforeach
+                                    @endforeach
+                                </td>
                             </tr>
                         </table>
 
