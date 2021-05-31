@@ -1,12 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Cast;
-use App\Models\Movie;
-use App\Models\Screening;
 use App\Repositories\IActorRepository;
 use App\Repositories\IMovieRepository;
+use App\Repositories\IScreeningRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -14,11 +11,13 @@ class MovieController extends Controller
 {
     public $movie;
     public $actor;
+    public $screening;
 
-    public function __construct(IMovieRepository $movie,IActorRepository $actor)
+    public function __construct(IMovieRepository $movie,IActorRepository $actor, IScreeningRepository $screening)
     {
         $this->movie = $movie;
         $this->actor = $actor;
+        $this->screening = $screening;
     }
 
     public function index(){
@@ -70,19 +69,22 @@ class MovieController extends Controller
             $this->movie->storeCast($id = null, $collection);
         }
 
-//        Cast::create([
-//            'movie_id'=>$request->movie_id,
-//            'actor_id'=>$request->movie_actor_id,
-//            'role'=>$request->movie_actor_roll
-//        ]);
         return redirect()->route('movies-details');
     }
     public function show($id){
-        $screening = Screening::select("*")->where("movie_id", "=", $id)->get();
-        return view('movie.index',['movie'=>Movie::select("*")->where("id", "=", $id)->get(),'screening' => $screening]);
+        $screening = $this->screening->getScreeningByMovieId($id);
+        $movie = $this->movie->getMovie($id);
+        return View::make('movie.index',compact('movie','screening'));
     }
     public function search(Request $request){
-        $movie = Movie::select("*")->where("title", "LIKE", "%{$request->searchbar}%")->get();
-        return view('welcome',['search'=>$movie]);
+        $this->validate(request(),
+            [
+                'searchbar'=>'required'
+            ]
+        );
+        $query = $request->except(['_token']);
+        $search = $this->movie->getMovieByString($query);
+        //$movie = Movie::select("*")->where("title", "LIKE", "%{$request->searchbar}%")->get();
+        return view('welcome',compact('search'));
     }
 }

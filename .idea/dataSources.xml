@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="moviesbook@localhost" uuid="016ee88b-7235-46ba-bfb2-9a4de4b7fae7">
+    <data-source source="LOCAL" name="laravel@localhost" uuid="92c15a52-b2aa-4d6b-8f7a-7432c1f3ed56">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/moviesbook</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/laravel</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

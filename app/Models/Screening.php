@@ -11,4 +11,11 @@ class Screening extends Model
     protected $table = 'screening';
     protected $fillable = ['theatre_id','movie_id','screening_time'];
     public $timestamps = false;
+
+    public function theatres(){
+        return $this->belongsToMany(Screening::class);
+    }
+    public function movies(){
+        return $this->belongsToMany(Screening::class);
+    }
 }

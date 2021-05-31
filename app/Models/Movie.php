@@ -15,4 +15,9 @@ class Movie extends Model
     {
         return $this->belongsToMany(Actor::class,'casts');
     }
+
+    public function theatres()
+    {
+        return $this->belongsToMany(Theatre::class,'screening');
+    }
 }

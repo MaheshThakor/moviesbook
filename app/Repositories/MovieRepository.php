@@ -16,6 +16,7 @@ class MovieRepository implements IMovieRepository
 
     public function getMovie($id)
     {
+        return Movie::all()->find($id);
     }
 
     public function storeMovie($id = null, $collection = [])
@@ -55,6 +56,17 @@ class MovieRepository implements IMovieRepository
         $actor = Actor::find($collection['movie_actor_id']);
         $movie->actors()->attach($actor,['role'=>$collection['movie_actor_roll']]);
         return response(['message'=>'Movie Added'],200);
+    }
+
+    public function movieShows($id = null, $collection = [])
+    {
+
+    }
+
+    public function getMovieByString($query)
+    {
+       $query = $query['searchbar'];
+        return Movie::where("title", "LIKE", "%{$query}%")->get();;
     }
 
     public function model()

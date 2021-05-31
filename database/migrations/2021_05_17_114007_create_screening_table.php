@@ -19,7 +19,7 @@ class CreateScreeningTable extends Migration
             $table->foreign('theatre_id')->references('id')->on('theatres')->onDelete('cascade');
             $table->unsignedBigInteger('movie_id');
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
-            $table->dateTime('screening_time');
+            $table->timestamp('screening_time');
         });
     }
 
