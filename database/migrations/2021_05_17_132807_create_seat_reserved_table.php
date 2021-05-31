@@ -15,16 +15,13 @@ class CreateSeatReservedTable extends Migration
     {
         Schema::create('seat_reserved', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('seat_id');
-            $table->unsignedInteger('reservation_id');
-            $table->unsignedInteger('screening_id');
-        });
-        Schema::table('seat_reserved', function (Blueprint $table) {
+            $table->unsignedBigInteger('seat_id');
             $table->foreign('seat_id')->references('id')->on('seat')->onDelete('cascade');
+            $table->unsignedBigInteger('reservation_id');
             $table->foreign('reservation_id')->references('id')->on('reservation')->onDelete('cascade');
+            $table->unsignedBigInteger('screening_id');
             $table->foreign('screening_id')->references('id')->on('screening')->onDelete('cascade');
         });
-
     }
 
     /**

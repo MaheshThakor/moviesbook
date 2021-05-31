@@ -17,9 +17,7 @@ class CreateSeatTable extends Migration
             $table->id();
             $table->integer('row_number');
             $table->integer('seat_number');
-            $table->unsignedInteger('theatre_id');
-        });
-        Schema::table('seat', function (Blueprint $table) {
+            $table->unsignedBigInteger('theatre_id');
             $table->foreign('theatre_id')->references('id')->on('theatres')->onDelete('cascade');
         });
     }

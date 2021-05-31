@@ -13,15 +13,13 @@ class CreateTheatresTable extends Migration
      */
     public function up()
     {
-        Schema::table('theatres', function (Blueprint $table) {
+        Schema::create('theatres', function (Blueprint $table) {
             $table->id();
-            $table->string('theatre_name');
-
+            $table->unsignedBigInteger('city_id');
+            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
+            $table->string('theatre_name')->unique();
             $table->integer('seats_no')->default(100);
         });
-//        Schema::table('theatres', function (Blueprint $table) {
-//            $table->foreign('city_id')->references('id')->on('cities');
-//        });
     }
 
     /**

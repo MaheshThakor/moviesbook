@@ -16,13 +16,11 @@ class CreateReservationTable extends Migration
         Schema::create('reservation', function (Blueprint $table) {
             $table->id();
             $table->integer('screening_id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->tinyInteger('reserved');
             $table->dateTime('reservation_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
-        });
-        Schema::table('reservation', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

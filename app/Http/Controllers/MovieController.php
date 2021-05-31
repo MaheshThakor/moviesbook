@@ -2,36 +2,80 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Actor;
 use App\Models\Cast;
 use App\Models\Movie;
 use App\Models\Screening;
+use App\Repositories\IActorRepository;
+use App\Repositories\IMovieRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class MovieController extends Controller
 {
+    public $movie;
+    public $actor;
+
+    public function __construct(IMovieRepository $movie,IActorRepository $actor)
+    {
+        $this->movie = $movie;
+        $this->actor = $actor;
+    }
+
     public function index(){
-        return view('admin.movies',['movie'=>Movie::all(),'actor'=>Actor::all()]);
+        $movie = $this->movie->getAllMovie();
+        $actor = $this->actor->getAllActor();;
+        return View::make('admin.movies', compact('movie','actor'));
     }
-    public function store(Request $request){
-        Movie::create([
-            'title'=>$request->movie_title,
-            'poster'=> base64_encode(file_get_contents($request->file('movie_image'))),
-            'runtime'=>$request->movie_runtime,
-            'overview'=>$request->movie_overview,
-            'release_year'=>$request->movie_release_year,
-            'is_popular'=>$request->movie_popular,
-            'is_trending'=>$request->movie_trending,
-        ]);
-        return view('admin.movies',['actor'=>Actor::all(),'movie'=>Movie::all()]);
+
+    public function store(Request $request, $id = null){
+        $this->validate(request(),
+            [
+                'movie_title'=>'required',
+                'movie_runtime'=>'required',
+                'movie_overview'=>'required',
+                'movie_release_year'=>'required',
+            ]
+        );
+        $collection = $request->except(['_token','_method','movie_image','movie_submit']);
+        $image = ['image'=>base64_encode(file_get_contents($request->file('movie_image')))];
+        $collection[] = array_push($collection,$image);
+        if( ! is_null( $id ) )
+        {
+            $this->movie->storeMovie($id, $collection);
+        }
+        else
+        {
+            $this->movie->storeMovie($id = null, $collection);
+        }
+        return redirect()->route('movies-details');
     }
-    public function cast(Request $request){
-        Cast::create([
-            'movie_id'=>$request->movie_id,
-            'actor_id'=>$request->movie_actor_id,
-            'role'=>$request->movie_actor_roll
-        ]);
-        return view('admin.movies',['actor'=>Actor::all(),'movie'=>Movie::all()]);
+
+    public function cast(Request $request , $id = null){
+
+        $this->validate(request(),
+            [
+                'movie_id'=>'required',
+                'movie_actor_id'=>'required',
+                'movie_actor_roll'=>'required'
+            ]
+        );
+        $collection = $request->except(['_token','_method','cast_submit']);
+
+        if( ! is_null( $id ) )
+        {
+            $this->movie->storeCast($id, $collection);
+        }
+        else
+        {
+            $this->movie->storeCast($id = null, $collection);
+        }
+
+//        Cast::create([
+//            'movie_id'=>$request->movie_id,
+//            'actor_id'=>$request->movie_actor_id,
+//            'role'=>$request->movie_actor_roll
+//        ]);
+        return redirect()->route('movies-details');
     }
     public function show($id){
         $screening = Screening::select("*")->where("movie_id", "=", $id)->get();

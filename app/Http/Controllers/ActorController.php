@@ -4,23 +4,50 @@ namespace App\Http\Controllers;
 
 use App\Models\Actor;
 use App\Models\Movie;
+use App\Repositories\IActorRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class ActorController extends Controller
 {
+    public $actor;
+
+    public function __construct(IActorRepository $actor)
+    {
+        $this->actor = $actor;
+    }
+
     public function index(){
-        return view('admin.actor',['actor'=>Actor::all()]);
+        $actor = $this->actor->getAllActor();
+        return View::make('admin.actor', compact('actor'));
     }
-    public function store(Request $request){
-        Actor::create([
-            'name'=>$request->actor_name,
-            'image'=> base64_encode(file_get_contents($request->file('actor_image'))),
-            'bio'=>$request->actor_bio,
-            'birth_date'=>$request->actor_dob,
-        ]);
-        return view('admin.actor',['actor'=>Actor::all()]);
+
+    public function store(Request $request, $id = null){
+
+        $this->validate(request(),
+            [
+                'actor_name'=>'required',
+                'actor_bio'=>'required',
+                'actor_dob'=>'required',
+            ]
+        );
+
+        $collection = $request->except(['_token','_method','actor_image']);
+        $image = ['image'=>base64_encode(file_get_contents($request->file('actor_image')))];
+        $collection[] = array_push($collection,$image);
+        if( ! is_null( $id ) )
+        {
+            $this->actor->storeActor($id, $collection);
+        }
+        else
+        {
+            $this->actor->storeActor($id = null, $collection);
+        }
+        return redirect()->route('actor-details');
     }
+
     public  function show($id){
-        return view('actor.index',['actor'=>Actor::select("*")->where("id", "=", $id)->get()]);
+        $actor = $this->actor->getActor($id);
+        return View::make('actor.index', compact('actor'));
     }
 }

@@ -13,8 +13,12 @@ class CreateCastsTable extends Migration
      */
     public function up()
     {
-        Schema::table('casts', function (Blueprint $table) {
+        Schema::create('casts', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('movie_id');
+            $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
+            $table->unsignedBigInteger('actor_id');
+            $table->foreign('actor_id')->references('id')->on('actors')->onDelete('cascade');
             $table->string('role');
         });
     }

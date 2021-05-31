@@ -3,24 +3,24 @@
     <div class="col-12">
         <div class="card bg-light">
             <div class="card-body">
+                @if(isset($actor))
                 <div class="table-responsive">
-                    @foreach($actor as $cast)
                         <div class="w-auto d-inline-block">
-                            <img src="data:image/png;base64, {{$cast->image}}" alt="poster" style="width: 450px;height: 500px;"/>
+                            <img src="data:image/png;base64, {{$actor->image}}" alt="poster" style="width: 450px;height: 500px;"/>
                         </div>
                         <div class="w-auto d-inline-block  font-icon-detail">
                             <div class="">
-                                <a href="/movie/{{$cast->id}}" ><p>Name : {{$cast->name}}</p></a>
+                                <a href="/movie/{{$actor->id}}" ><p>Name : {{$actor->name}}</p></a>
                             </div>
                             <div class="text-info mb-1">
-                                DOB : {{date("d-m-Y",strtotime(trim($cast->birth_date," 00:00:00")))}}
+                                DOB : {{date("d-m-Y",strtotime(trim($actor->birth_date," 00:00:00")))}}
                             </div>
                             <div style="width: 45vw;">
-                                Bio Data : <p class="mt-1">{{$cast->bio}}</p>
+                                Bio Data : <p class="mt-1">{{$actor->bio}}</p>
                             </div>
                             <div style="width: 45vw;">
                                 Movies : <br>
-                                @foreach(\App\Models\Cast::select("*")->where("actor_id", "=", $cast->id)->get() as $castdata)
+                                @foreach(\App\Models\Cast::select("*")->where("actor_id", "=", $actor->id)->get() as $castdata)
                                     @foreach(\App\Models\Movie::select("*")->where("id", "=", $castdata->movie_id)->get() as $movie)
 
                                     <div class="mt-1 d-inline-block bg-dark text-center">
@@ -30,27 +30,13 @@
                                 @endforeach
                             </div>
                         </div>
-
-{{--                        <table class="table table-bordered w-100 m-0">--}}
-{{--                            <tr>--}}
-{{--                                <td class="text-center" colspan="3" width="500px">--}}
-{{--                         --}}
-{{--                                </td>--}}
-{{--                                <td>--}}
-{{--                                    Actor Name : --}}
-{{--                                </td>--}}
-{{--                                <td>--}}
-{{--                                    DOB : <p>{{$cast->birth_date}}</p>--}}
-{{--                                </td>--}}
-{{--                                <td>--}}
-{{--
-{{--                                </td>--}}
-
-{{--                            </tr>--}}
-
-{{--                        </table>--}}
-                    @endforeach
                 </div>
+                @else
+                    <div class="bg-dark col-12 text-center text-white" style="height: 400px;font-size: x-large;">
+                        No Actor Details Found For That Actor ID
+                    </div>
+
+                    @endif
             </div>
         </div>
     </div>

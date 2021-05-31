@@ -20,13 +20,10 @@ class CreateMoviesTable extends Migration
             $table->string('runtime');
             $table->string('overview');
             $table->timestamp('release_year');
-            $table->string('is_popular',10);
-            $table->string('is_trending',10);
+            $table->string('is_popular',10)->nullable();
+            $table->string('is_trending',10)->nullable();
         });
-        Schema::table('casts',function(Blueprint $table){
-            $table->unsignedInteger('movie_id');
-            $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
-        });
+        DB::statement("ALTER TABLE movies MODIFY COLUMN poster MEDIUMBLOB");
     }
 
     /**

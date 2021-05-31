@@ -15,11 +15,7 @@ class CreateCitiesTable extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
-            $table->string('city_name');
-        });
-        Schema::create('theatres', function (Blueprint $table) {
-            $table->unsignedInteger('city_id');
-            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
+            $table->string('city_name')->unique();
         });
     }
 

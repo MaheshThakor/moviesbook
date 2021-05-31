@@ -85,11 +85,11 @@
 
                     @foreach($seat as $seats)
                         @foreach(\App\Models\SeatReserved::select('seat_id')->where('reservation_id','=',$reserved)->get() as $rs)
-                            @if($rs->seat_id != $seats->id)
+{{--                            @if($rs->seat_id != $seats->id)--}}
                                 <div class="d-inline-block" style="height: 40px; width: 135px;">
                                     <input type="checkbox" class="fas fa-chair" id="{{$seats->id}}" name="seat[]" value="{{$seats->id}}">
                                 </div>
-                            @endif
+{{--                            @endif--}}
                         @endforeach
                         @if(!isset($rs))
                                 <div class="d-inline-block" style="height: 40px; width: 135px;">

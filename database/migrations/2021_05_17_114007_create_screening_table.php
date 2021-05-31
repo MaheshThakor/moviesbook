@@ -15,13 +15,11 @@ class CreateScreeningTable extends Migration
     {
         Schema::create('screening', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('theatre_id');
-            $table->unsignedInteger('movie_id');
-            $table->dateTime('screening_time');
-        });
-        Schema::table('screening', function (Blueprint $table) {
+            $table->unsignedBigInteger('theatre_id');
             $table->foreign('theatre_id')->references('id')->on('theatres')->onDelete('cascade');
+            $table->unsignedBigInteger('movie_id');
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
+            $table->dateTime('screening_time');
         });
     }
 

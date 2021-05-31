@@ -1,6 +1,6 @@
 @extends('layouts.user-master')
 @section('content')
-    @if(isset($trending))
+    @if(isset($trending) && !$trending->isEmpty())
     <div class="col-12 m-0">
         <div class="card  bg-danger">
             <div class="card-header m-0">
@@ -30,7 +30,7 @@
         </div>
     @endforeach
     @endif
-    @if(isset($popular))
+    @if(isset($popular) && !$popular->isEmpty())
     <div class="col-12">
         <div class="card bg-info">
             <div class="card-header m-0">
@@ -107,5 +107,16 @@
                 </div>
             </div>
         @endforeach
+    @endif
+    @if(isset($trending,$popular) && $trending->isEmpty() && $popular->isEmpty() && !isset($search))
+        <div class="col-12">
+            <div class="card bg-dark text-white text-center">
+                <div class="card-body">
+                    <div class="table-responsive" style="height:500px;font-size: x-large;">
+                        No Movies Available
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
 @endsection

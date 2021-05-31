@@ -20,10 +20,7 @@ class CreateActorsTable extends Migration
             $table->string('bio');
             $table->dateTime('birth_date');
         });
-        Schema::create('casts',function(Blueprint $table){
-            $table->unsignedInteger('actor_id');
-            $table->foreign('actor_id')->references('id')->on('actors')->onDelete('cascade');
-        });
+        DB::statement("ALTER TABLE actors MODIFY COLUMN image MEDIUMBLOB");
     }
 
     /**
