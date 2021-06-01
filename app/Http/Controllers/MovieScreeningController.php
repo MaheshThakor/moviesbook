@@ -39,7 +39,6 @@ class MovieScreeningController extends Controller
 
         $collection = $request->except(['_token','theatre_submit']);
 
-
         if( ! is_null( $id ) )
         {
             $this->screening->storeScreening($id, $collection);
@@ -49,13 +48,6 @@ class MovieScreeningController extends Controller
             $this->screening->storeScreening($id = null, $collection);
         }
 
-//        Screening::create([
-//           'theatre_id'=>$request->theatre_id,
-//           'movie_id'=>$request->movie_id,
-//            'screening_time'=>$request->screening_time
-//        ]);
-
         return redirect()->route('screening-details');
-        //return view('admin.screening',['theatre'=>Theatre::all(),'movie'=>Movie::all(),'message'=>'Success']);
     }
 }

@@ -29,11 +29,16 @@ class TheatreController extends Controller
         return view('admin.theatres',['theatre'=>Theatre::all(),'city'=>City::all()]);
     }
     public function seat(Request $request){
-        Seat::create([
-            'row_number'=>$request->row_number,
-            'seat_number'=>$request->seat_number,
+
+        for ($i=1;$i<101;$i++){
+            Seat::create([
+                'row_number'=>$request->row_number,
+                'seat_number'=>$i,
             'theatre_id'=>$request->theatre_id
         ]);
+        }
+
+
         return redirect('/theatres-details');
     }
 

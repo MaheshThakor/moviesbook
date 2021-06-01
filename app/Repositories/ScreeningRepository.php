@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Repositories;
-
 use App\Models\Movie;
 use App\Models\Screening;
 use App\Models\Theatre;

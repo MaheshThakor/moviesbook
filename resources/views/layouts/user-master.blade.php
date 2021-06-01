@@ -47,6 +47,16 @@
                                         </p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('logout') }}"onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                        <p>
+                                            {{ Auth::user()->first_name." ".Auth::user()->last_name }}
+                                        </p>
+                                    </a>
+                                </li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                                 @else
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">
