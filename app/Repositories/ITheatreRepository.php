@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-interface ITheatreRepository{
+interface ITheatreRepository
+{
 
     public function getAllTheatre();
 
@@ -11,4 +12,6 @@ interface ITheatreRepository{
     public function getTheatreByString($query);
 
     public function storeTheatre($id = null, $collection = []);
+
+    public function storeCity($id = null, $collection = []);
 }

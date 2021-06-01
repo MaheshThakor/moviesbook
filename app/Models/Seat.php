@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Seat extends Model
 {
     use HasFactory;
+
     protected $table = 'seat';
     public $timestamps = false;
-    protected $fillable = ['row_number','seat_number','theatre_id'];
+    protected $fillable = ['row_number', 'seat_number', 'theatre_id'];
+
+    public function reservation()
+    {
+        return $this->belongsToMany(Reservation::class, 'seat_reserved');
+    }
 }

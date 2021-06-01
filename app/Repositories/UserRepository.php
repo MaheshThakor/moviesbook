@@ -3,12 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
-//use Your Model
 
-/**
- * Class UserRepository.
- */
 class UserRepository implements IUserRepository
 {
     protected $user = null;
@@ -23,9 +18,9 @@ class UserRepository implements IUserRepository
         return User::find($id);
     }
 
-    public function createOrUpdate( $id = null, $collection = [] )
+    public function createOrUpdate($id = null, $collection = [])
     {
-        if(is_null($id)) {
+        if (is_null($id)) {
             $user = new User;
             $user->first_name = $collection['first_name'];
             $user->last_name = $collection['last_name'];

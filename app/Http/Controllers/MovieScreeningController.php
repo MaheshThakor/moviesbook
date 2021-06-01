@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Movie;
-use App\Models\Screening;
-use App\Models\Theatre;
 use App\Repositories\IMovieRepository;
 use App\Repositories\IScreeningRepository;
 use App\Repositories\ITheatreRepository;
@@ -23,28 +20,29 @@ class MovieScreeningController extends Controller
         $this->movie = $movie;
         $this->theatre = $theatre;
     }
-    public function index(){
+
+    public function index()
+    {
         $movie = $this->movie->getAllMovie();
         $theatre = $this->theatre->getAllTheatre();
-        return View::make('admin.screening',compact('theatre','movie'));
+        return View::make('admin.screening', compact('theatre', 'movie'));
     }
-    public function store(Request $request, $id = null){
+
+    public function store(Request $request, $id = null)
+    {
         $this->validate(request(),
             [
-                'theatre_id'=>'required',
-                'movie_id'=>'required',
-                'screening_time'=>'required'
+                'theatre_id' => 'required',
+                'movie_id' => 'required',
+                'screening_time' => 'required'
             ]
         );
 
-        $collection = $request->except(['_token','theatre_submit']);
+        $collection = $request->except(['_token', 'theatre_submit']);
 
-        if( ! is_null( $id ) )
-        {
+        if (!is_null($id)) {
             $this->screening->storeScreening($id, $collection);
-        }
-        else
-        {
+        } else {
             $this->screening->storeScreening($id = null, $collection);
         }
 

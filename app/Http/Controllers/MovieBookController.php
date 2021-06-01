@@ -2,58 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
-use App\Models\Movie;
-use App\Models\Reservation;
-use App\Models\Screening;
-use App\Models\Seat;
-use App\Models\SeatReserved;
-use App\Models\Theatre;
+use App\Repositories\IMovieBookRepository;
 use App\Repositories\IScreeningRepository;
 use App\Repositories\ITheatreRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class MovieBookController extends Controller
 {
     public $screening;
     public $theatre;
-    public function __construct(IScreeningRepository $screening, ITheatreRepository $theatre)
+    public $movieBook;
+
+    public function __construct(IScreeningRepository $screening, ITheatreRepository $theatre, IMovieBookRepository $movieBook)
     {
         $this->screening = $screening;
         $this->theatre = $theatre;
+        $this->movieBook = $movieBook;
     }
 
-    public function index($id){
+    public function index($id)
+    {
         $screening = $this->screening->getScreeningById($id);
         $theatre = $this->theatre->getTheatre($screening->theatre_id);
-        //$reservation = Reservation::where('screening_id',$id)->get();
-        return view('seats.index',[
-            'movie'=>Movie::select("*")->where('id',$screening->movie_id)->get(1),
-            'city'=>City::select("*")->where('id',$theatre->city_id)->get(1),
-            'theatre'=>$theatre,
-            'seat'=> Seat::all(),
-            'screening'=>$screening->id,
-             'reserved'=>$screening->id
-        ]);
+        $movie = $this->movieBook->fetchMovie($screening->movie_id);
+        $city = $this->movieBook->fetchCity($theatre->city_id);
+        $seat = $this->movieBook->fetchAllSeat();
+        return View::make('seats.index',
+            compact('movie', 'city', 'theatre', 'seat', 'screening'));
     }
-    public function reserve(Request $request){
 
-        foreach ($request->seat_id as $seats){
-            Reservation::create([
-                'screening_id'=>$request->screening_id,
-                'user_id'=>auth()->user()->id,
-                'reserved'=>'1'
-            ]);
-            $reservation = Reservation::latest()->first();
-            $reservation->refresh();
-            SeatReserved::create([
-                'seat_id'=>$seats,
-                'reservation_id'=>$reservation->id,
-                'screening_id'=>$request->screening_id,
-            ]);
-        }
-
-
-        return redirect('/');
+    public function reserve(Request $request)
+    {
+        $this->validate(request(),
+            [
+                'movie_id' => 'required',
+                'city_id' => 'required',
+                'theatre_id' => 'required',
+                'seat_id' => 'required',
+                'screening_id' => 'required',
+            ]
+        );
+        $collection = $request->except(['_token', '_method', 'submit_seats']);
+        $this->movieBook->seatNreserve($collection);
+        return redirect()->route('MainPage');
     }
 }

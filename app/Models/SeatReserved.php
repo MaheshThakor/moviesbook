@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class SeatReserved extends Model
 {
     use HasFactory;
+
     protected $table = 'seat_reserved';
     public $timestamps = false;
-    protected $fillable = ['seat_id','reservation_id','screening_id'];
+    protected $fillable = ['seat_id', 'reservation_id', 'screening_id'];
 }

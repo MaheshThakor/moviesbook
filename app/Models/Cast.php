@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cast extends Model
 {
     use HasFactory;
-    protected $fillable = ['movie_id','actor_id','role'];
+
+    protected $fillable = ['movie_id', 'actor_id', 'role'];
     public $timestamps = false;
 }

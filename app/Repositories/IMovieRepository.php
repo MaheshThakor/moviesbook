@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-interface IMovieRepository{
+interface IMovieRepository
+{
 
     public function getAllMovie();
 

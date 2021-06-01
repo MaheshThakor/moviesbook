@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-interface IActorRepository{
+interface IActorRepository
+{
 
     public function getAllActor();
 

@@ -12,7 +12,7 @@ interface IScreeningRepository{
 
     public function getScreeningByMovieId($id);
 
-    public function storeScreening( $id = null, $collection = [] );
+    public function storeScreening($id = null, $collection = []);
 
 
 }

@@ -2,10 +2,15 @@
 
 namespace App\Repositories;
 
-use App\Models\Reservation;
-use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
-
 interface IMovieBookRepository
 {
-    public function seatNreserve( $id = null, $collection = [] );
+    public function seatNreserve($collection = []);
+
+    public function fetchMovie($id);
+
+    public function fetchCity($id);
+
+    public function fetchAllSeat();
+
+    public function latestReservation();
 }

@@ -8,7 +8,7 @@ interface IHomeRepository
 
     public function getPopular();
 
-    public  function searchMovies();
+    public function searchMovies();
 
     public function getAllMovies();
 }

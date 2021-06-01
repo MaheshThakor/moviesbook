@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Actor;
 use Illuminate\Http\Request;
 
@@ -10,10 +11,14 @@ class AdminController extends Controller
     {
         return view('admin.dashboard');
     }
-    public function actor(){
+
+    public function actor()
+    {
         return view('admin.actor');
     }
-    public function theatres(){
+
+    public function theatres()
+    {
         return view('admin.theatres');
     }
 

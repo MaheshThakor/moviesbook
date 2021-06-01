@@ -2,51 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
-use App\Models\Seat;
-use App\Models\SeatReserved;
-use App\Models\Theatre;
+use App\Repositories\ICityRepository;
+use App\Repositories\ISeatRepository;
+use App\Repositories\ITheatreRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class TheatreController extends Controller
 {
-    //
-    public function index(){
-            return view('admin.theatres',['theatre'=>Theatre::all(),'city'=>City::all(),'reserved'=>SeatReserved::all()]);
-    }
-    public function store(Request $request){
-        Theatre::create([
-            'city_id'=>$request->city_id,
-            'theatre_name'=>$request->theatre_name,
-            'seats_no'=>$request->total_seats,
-        ]);
-        return view('admin.theatres',['theatre'=>Theatre::all(),'city'=>City::all()]);
-    }
-    public function city(Request $request){
-        City::create([
-            'city_name'=>$request->city_name,
-        ]);
-        return view('admin.theatres',['theatre'=>Theatre::all(),'city'=>City::all()]);
-    }
-    public function seat(Request $request){
+    public $theatre;
+    public $city;
+    public $seats;
 
-        for ($i=1;$i<101;$i++){
-            Seat::create([
-                'row_number'=>$request->row_number,
-                'seat_number'=>$i,
-            'theatre_id'=>$request->theatre_id
-        ]);
-        }
-
-
-        return redirect('/theatres-details');
+    public function __construct(ITheatreRepository $theatre, ICityRepository $city, ISeatRepository $seats)
+    {
+        $this->theatre =$theatre;
+        $this->city = $city;
+        $this->seats = $seats;
     }
 
-    public function test(Request $s){
-        dd($s);
-//            foreach ($s->seat as $seat){
-//            return $seat;
-//            }
+    public function index()
+    {
+        $theatre = $this->theatre->getAllTheatre();
+        $city = $this->city->getAllCities();
+        $reserved = $this->seats->getAllReservedSeats();
+        return View::make('admin.theatres', compact('theatre','city','reserved'));
+    }
 
+    public function store(Request $request)
+    {
+        $this->validate(request(),
+            [
+                'city_id' => 'required',
+                'theatre_name' => 'required',
+                'total_seats' => 'required'
+            ]
+        );
+        $collection = $request->except(['_token', '_method', 'theatre_submit']);
+        $this->theatre->storeTheatre($id = null,$collection);
+        return redirect()->route('theatres-details');
+    }
+
+    public function city(Request $request)
+    {
+        $this->validate(request(),['city_name' => 'required']);
+        $collection = $request->except(['_token', '_method', 'add_city']);
+        $this->theatre->storeCity($id = null,$collection);
+        return redirect()->route('theatres-details');
+    }
+
+    public function seat(Request $request)
+    {
+        $this->validate(request(),['row_number' => 'required','seat_number'=>'required','theatre_id'=>'required']);
+        $collection = $request->except(['_token', '_method', 'cast_submit']);
+        $this->seats->storeSeats($id = null,$collection);
+        return redirect()->route('theatres-details');
     }
 }

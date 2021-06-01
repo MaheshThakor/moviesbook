@@ -49,7 +49,7 @@ class MovieRepository implements IMovieRepository
         if(is_null($id)) {
             $movie = Movie::find($collection['movie_id']);
             $actor = Actor::find($collection['movie_actor_id']);
-            $movie->actors()->attach($actor,['role'=>$collection['movie_actor_roll']]);
+            $movie->actors()->attach($actor,['role'=> $collection['movie_actor_roll']]);
             return response(['message'=>'Movie Added'],200);
         }
         $movie = Movie::find($collection['movie_id']);
