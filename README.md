@@ -1,10 +1,7 @@
-#MovieBook.com
-
+#MoviesBook.com
 ## Setup
-
-Laravel is a web application
-
-- Import Database From DB/moviesbook.
+- Set .env file for Database Name && username && password.
+- composer install && npm install && npm run dev && php artisan migrate:fresh && php artisan serve
 - Go "/admin-panel" to for Admin.
 - Add Actor Details.
 - Add Movies.

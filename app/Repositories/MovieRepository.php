@@ -3,7 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\Actor;
+use App\Models\City;
 use App\Models\Movie;
+use App\Models\Screening;
+use App\Models\Theatre;
 
 class MovieRepository implements IMovieRepository
 {
@@ -65,8 +68,26 @@ class MovieRepository implements IMovieRepository
 
     public function getMovieByString($query)
     {
-       $query = $query['searchbar'];
-        return Movie::where("title", "LIKE", "%{$query}%")->get();;
+        $query = $query['searchbar'];
+
+        $city = [];
+        $movie = Movie::where("title", "LIKE", "%{$query}%")->get();
+
+        foreach (City::where("city_name", "LIKE", "%{$query}%")->get() as $cities){
+            foreach (Theatre::where("city_id",$cities->id)->get() as $theatre) {
+                foreach (Screening::where('theatre_id',$theatre->id)->get() as $screen){
+                    $city [] = $this->getMovie($screen['movie_id']);
+                }
+            }
+        }
+
+        $theatre = [];
+        foreach (Theatre::where("theatre_name", "LIKE", "%{$query}%")->get() as $theatres) {
+            foreach (Screening::where('theatre_id',$theatres->id)->get() as $screen){
+                $theatre [] = $this->getMovie($screen['movie_id']);
+            }
+        }
+        return compact('city','movie','theatre');
     }
 
     public function model()
