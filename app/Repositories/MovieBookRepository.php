@@ -36,16 +36,16 @@ class MovieBookRepository implements IMovieBookRepository
     {
 
         foreach ($collection["seat_id"] as $seats) {
-            Reservation::create([
+            $reservation = Reservation::create([
                 'screening_id'=>$collection['screening_id'],
                 'user_id'=>auth()->user()->id,
                 'reserved'=>'1'
             ]);
-            $reservation = $this->latestReservation();
             $seats = Seat::find($seats);
             $reservation->seats()->attach($seats,['screening_id'=>$collection['screening_id']]);
 
         }
+
         return response(['message'=>'Movie Added'],200);
 
     }
