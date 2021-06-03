@@ -53,9 +53,6 @@ class TheatreController extends Controller
 
     public function seat(Request $request)
     {
-        $this->validate(request(),['row_number' => 'required','seat_number'=>'required','theatre_id'=>'required']);
-        $collection = $request->except(['_token', '_method', 'cast_submit']);
-        $this->seats->storeSeats($id = null,$collection);
-        return redirect()->route('theatres-details');
+
     }
 }

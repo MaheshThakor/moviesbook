@@ -29,12 +29,6 @@ class SeatRepository implements ISeatRepository
 
     public function storeSeats($id, $collection = [])
     {
-        for ($i = 1; $i < 101; $i++) {
-            Seat::create([
-                'row_number' => $collection['row_number'],
-                'seat_number' => $i,
-                'theatre_id' => $collection['theatre_id']
-            ]);
-        }
+
     }
 }

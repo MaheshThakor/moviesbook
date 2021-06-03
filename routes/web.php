@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ActorController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\MovieBookController;
@@ -13,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 //User
-Route::get('/', [MainPageController::class, 'index'])->name('MainPage');
+Route::get('/', [MainPageController::class, 'index'])->name('MainPage')->middleware('auth');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/movie/{id}', [MovieController::class, 'show']);
 Route::get('/actor/{id}', [ActorController::class, 'show']);
@@ -30,7 +32,14 @@ Route::post('/movies-save', [MovieController::class, 'store'])->name('movies-sav
 Route::post('/cast-save', [MovieController::class, 'cast'])->name('cast-save');
 Route::get('/theatres-details', [TheatreController::class, 'index'])->name('theatres-details');
 Route::post('/theatres-save', [TheatreController::class, 'store'])->name('theatres-save');
-Route::post('/add-seat', [TheatreController::class, 'seat'])->name('add-seat');
 Route::post('/city-save', [TheatreController::class, 'city'])->name('city-save');
 Route::get('/screening-details', [MovieScreeningController::class, 'index'])->name('screening-details');
 Route::post('/screening-save', [MovieScreeningController::class, 'store'])->name('screening-save');
+
+
+//Admin Test
+Route::get('/login/admin', [LoginController::class,'showAdminLoginForm']);
+Route::get('/register/admin', [RegisterController::class,'showAdminRegisterForm']);
+Route::post('/login/admin', [LoginController::class,'adminLogin']);
+Route::post('/register/admin', [RegisterController::class,'createAdmin']);
+//Route::view('/home', 'home')->middleware('auth');

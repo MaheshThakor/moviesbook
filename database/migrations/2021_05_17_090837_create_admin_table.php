@@ -13,9 +13,8 @@ class CreateAdminTable extends Migration
      */
     public function up()
     {
-        Schema::create('admin', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->string('user_name')->unique();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
@@ -24,15 +23,6 @@ class CreateAdminTable extends Migration
             $table->rememberToken()->nullable();
             $table->timestamps();
         });
-        DB::table('admin')->insert(
-            array(
-                'user_name' => 'admin',
-                'first_name' => 'Super',
-                'last_name' => 'User',
-                'email' => 'email@email.com',
-                'password' => bcrypt('password')
-            )
-        );
     }
 
     /**
