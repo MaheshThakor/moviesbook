@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\SeatBookNotification;
 use App\Repositories\IMovieBookRepository;
 use App\Repositories\IScreeningRepository;
 use App\Repositories\ITheatreRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use Notification;
 
 class MovieBookController extends Controller
 {
@@ -16,6 +19,7 @@ class MovieBookController extends Controller
 
     public function __construct(IScreeningRepository $screening, ITheatreRepository $theatre, IMovieBookRepository $movieBook)
     {
+        $this->middleware('auth');
         $this->screening = $screening;
         $this->theatre = $theatre;
         $this->movieBook = $movieBook;
@@ -45,6 +49,7 @@ class MovieBookController extends Controller
         );
         $collection = $request->except(['_token', '_method', 'submit_seats']);
         $this->movieBook->seatNreserve($collection);
+        $this->movieBook->sendNotification($collection);
         return redirect()->route('MainPage');
     }
 }

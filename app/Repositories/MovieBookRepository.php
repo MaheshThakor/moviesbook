@@ -6,6 +6,10 @@ use App\Models\City;
 use App\Models\Movie;
 use App\Models\Reservation;
 use App\Models\Seat;
+use App\Models\Theatre;
+use App\Notifications\SeatBookNotification;
+use Illuminate\Support\Facades\Auth;
+use Notification;
 
 class MovieBookRepository implements IMovieBookRepository
 {
@@ -42,7 +46,24 @@ class MovieBookRepository implements IMovieBookRepository
             $reservation->seats()->attach($seats, ['screening_id' => $collection['screening_id']]);
 
         }
-        
+
+    }
+
+    public function sendNotification($collection = [])
+    {
+        $movie = $this->fetchMovie($collection['movie_id']);
+        $theatre = Theatre::find($collection['theatre_id']);
+        $city = $this->fetchCity($collection['city_id']);
+        $details = [
+            'name' => Auth::user()->first_name." ".Auth::user()->last_name,
+            'body' => "You Have Booked ".count($collection['seat_id'])." Tickets For Movie "
+                .$movie->title." in ".$theatre->theatre_name.",".$city->city_name.".",
+            'thanks' => 'Thank you',
+            'detail' => 'You Can Visit For More Information :',
+            'detailUrl' => url('/user-movie-details'),
+            'movie_id' => $movie->id
+        ];
+        Notification::send(Auth::user(), new SeatBookNotification($details));
     }
 
     public function model()

@@ -13,4 +13,6 @@ interface IMovieBookRepository
     public function fetchAllSeat();
 
     public function latestReservation();
+
+    public function sendNotification($collection = []);
 }
