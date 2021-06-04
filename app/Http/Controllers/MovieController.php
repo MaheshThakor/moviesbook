@@ -86,6 +86,6 @@ class MovieController extends Controller
         );
         $query = $request->except(['_token']);
         $search = $this->movie->getMovieByString($query);
-        return view('welcome', compact('search'));
+        return view('welcome', compact('search','query'));
     }
 }

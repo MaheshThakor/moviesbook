@@ -41,18 +41,35 @@
                         <ul class="navbar-nav">
                                 @auth
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ url('/') }}">
-                                        <p>
-                                            Home
-                                        </p>
-                                    </a>
+                                    <a class="nav-link" href="{{ url('/') }}"><p>Home</p></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('logout') }}"onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <p>
-                                            {{ Auth::user()->first_name." ".Auth::user()->last_name }}
+                                            Movies
                                         </p>
                                     </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                        <a class="dropdown-item" href="{{route('popular')}}">Popular Movies</a>
+                                        <a class="dropdown-item" href="{{route('trending')}}">Trending Movies</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="now-ui-icons users_single-02"></i>
+                                        <p>
+                                            <span class="d-lg-none d-md-block">User Profile</span>
+                                        </p>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                        <a class="dropdown-item" href="#">{{ Auth::user()->first_name." ".Auth::user()->last_name }}</a>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();document.getElementById('logout-form').submit();"
+                                        >Logout</a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </div>
                                 </li>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf

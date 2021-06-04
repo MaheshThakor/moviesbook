@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Repositories\IHomeRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class MainPageController extends Controller
 {
@@ -20,16 +21,17 @@ class MainPageController extends Controller
         return view('welcome', compact('trending', 'popular'));
     }
 
+
     public function popularMovies()
     {
-
-        return view('welcome');
+        $popular = $this->movie->getPopular();
+        return View::make('movie.popular',compact('popular'));
     }
 
     public function trendingMovies()
     {
-
-        return view('welcome');
+        $trending = $this->movie->getTrending();
+        return View::make('movie.trending',compact('trending'));
     }
 
     public function search(Request $request)

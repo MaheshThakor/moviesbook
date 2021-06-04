@@ -17,6 +17,8 @@ Auth::routes();
 //User
 Route::get('/', [MainPageController::class, 'index'])->name('MainPage')->middleware('auth');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/trending', [MainPageController::class, 'trendingMovies'])->name('trending');
+Route::get('/popular', [MainPageController::class, 'popularMovies'])->name('popular');
 Route::get('/movie/{id}', [MovieController::class, 'show']);
 Route::get('/actor/{id}', [ActorController::class, 'show']);
 Route::get('/book/{id}', [MovieBookController::class, 'index']);

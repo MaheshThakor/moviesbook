@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\City;
 use App\Models\Movie;
 use App\Models\Reservation;
+use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\Theatre;
 use App\Notifications\SeatBookNotification;
@@ -54,13 +55,16 @@ class MovieBookRepository implements IMovieBookRepository
         $movie = $this->fetchMovie($collection['movie_id']);
         $theatre = Theatre::find($collection['theatre_id']);
         $city = $this->fetchCity($collection['city_id']);
+        $screening = Screening::find($collection['screening_id']);
         $details = [
             'name' => Auth::user()->first_name." ".Auth::user()->last_name,
-            'body' => "You Have Booked ".count($collection['seat_id'])." Tickets For Movie "
-                .$movie->title." in ".$theatre->theatre_name.",".$city->city_name.".",
+            'body' => "You Have Booked ".count($collection['seat_id']).
+                " Tickets For Movie " .$movie->title.
+                " in ".$theatre->theatre_name.",".$city->city_name.
+                ".\n Show Time is : ".$screening->screening_time,
             'thanks' => 'Thank you',
             'detail' => 'You Can Visit For More Information :',
-            'detailUrl' => url('/user-movie-details'),
+            'detailUrl' => url('/'),
             'movie_id' => $movie->id
         ];
         Notification::send(Auth::user(), new SeatBookNotification($details));
